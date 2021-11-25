@@ -24,3 +24,6 @@ package.json 의 스크립트 추가하기
     "debug": "npx webpack serve --progress --mode development",
     "build": "npx webpack --mode production"
   },
+
+  실행 :
+  $ npm run debug src={01|02|03|04|...}
