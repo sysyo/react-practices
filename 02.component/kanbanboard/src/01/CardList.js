@@ -9,7 +9,8 @@ export default function({title, cards}) {
                                     key={card.no}
                                     title={card.title}
                                     description={card.description}
-                                    tasks={card.tasks} /> ) }
+                                    tasks={card.tasks} 
+                                /> ) }
         </div>
     )
 }
