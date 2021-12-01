@@ -7,18 +7,40 @@ export default function Form() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [validEmail, setValidEmail] = useState(false); // 아무것도 입력하지 않으면 vaild 하지않는다. (false)
+    const [gender, setGender] = useState('female');
+    const [birthYear, setBirthYear] = useState('1984');
+    const [agreeProv, setAgreeProv] = useState('no');
 
     const onChangeInputName = (e) => {
         // setName(e.target.value); // 인풋태그에 입력되는 값
         // 10자 제한 (validation)
         setName(e.target.value.substr(0, 10));
     }; 
+
     const onChangeInputEmail = (e) => {
         setEmail(e.target.value); // 인풋태그에 입력되는 값
 
         const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/g;
         setValidEmail(re.test(e.target.value));
     };
+
+    const onChangeInputGender = (e) => {
+        setGender(e.target.value); // 체크 되는 값
+    };
+
+    const onChangeInputProv = (e) => {
+        const status = e.target.value === 'no' ? 'yes' : 'no';
+
+        // API 호출
+        const url = '/prov/agree?staus=1';
+        console.log(url);
+        if(true) {
+            setAgreeProv(status);
+        }
+
+
+        // 통신할 때는 await async 써서 
+    }
 
     return (
         <form id="joinForm" name="joinForm" method="post" action="/do/not/post">
@@ -54,12 +76,12 @@ export default function Form() {
 
             <fieldset>
                 <legend>성별</legend>
-                <label>여</label> <input type="radio" name="gender" value={ "female" } defaultChecked={ true } />
-                <label>남</label> <input type="radio" name="gender" value={ "male" } defaultChecked={ false } />
+                <label>여</label> <input type="radio" name="gender" value={ "female" } onChange={onChangeInputGender} checked={gender === 'female'} defaultChecked={ true } />
+                <label>남</label> <input type="radio" name="gender" value={ "male" } onChange={onChangeInputGender} checked={gender === 'male'} defaultChecked={ false } />
             </fieldset>
 
             <label htmlFor="birthYear">생년</label>
-            <select id="birthYear">
+            <select id="birthYear" value={ birthYear } onChange={(e) => { setBirthYear(e.target.value) }}>
                 <option value='1984'>1984년</option>
                 <option value='1985'>1985년</option>
                 <option value='1986'>1986년</option>
@@ -74,7 +96,7 @@ export default function Form() {
 
             <fieldset>
                 <legend>약관동의</legend>
-                <input id="agree-prov" type="checkbox" name="agreeProv" value= { "yes" } defaultChecked={ false } />
+                <input id="agree-prov" type="checkbox" name="agreeProv" value= { agreeProv } checked={ agreeProv === 'yes'} onChange={ onChangeInputProv } defaultChecked= { false } />
                 <label>서비스 약관에 동의합니다.</label>
             </fieldset>
 
