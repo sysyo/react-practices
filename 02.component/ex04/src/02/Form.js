@@ -1,16 +1,53 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import './assets/Form.css';
 
 export default function Form() {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [validEmail, setValidEmail] = useState(false); // 아무것도 입력하지 않으면 vaild 하지않는다. (false)
 
+    const onChangeInputName = (e) => {
+        // setName(e.target.value); // 인풋태그에 입력되는 값
+        // 10자 제한 (validation)
+        setName(e.target.value.substr(0, 10));
+    }; 
+    const onChangeInputEmail = (e) => {
+        setEmail(e.target.value); // 인풋태그에 입력되는 값
+
+        const re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/g;
+        setValidEmail(re.test(e.target.value));
+    };
 
     return (
         <form id="joinForm" name="joinForm" method="post" action="/do/not/post">
             <label htmlFor="name">이름</label>
-            <input id="name" name="name" type="text" value={ "" } />
+            <input 
+                id="name" 
+                name="name" 
+                type="text" 
+                value={ name }  // 상태랑 연결
+                onChange={ onChangeInputName } />
 
             <label htmlFor="email">이메일</label>
-            <input id="email" name="email" type="text" value={ "" }/>
+            <input 
+                id="email" 
+                name="email" 
+                type="text" 
+                value={ email }
+                onChange={ onChangeInputEmail } />
+                {
+                    email === '' ? // email이 비어있으면
+                        null // null 값  
+                        :    // 아니면 
+                        validEmail ? // true or false
+                        // true
+                        <FontAwesomeIcon icon={faCheckCircle} style={ {marginLeft: 5, fontSize: 16, color: 'Green'} } />
+                        :
+                        // false
+                        <FontAwesomeIcon icon={faTimesCircle} style={ {marginLeft: 5, fontSize: 16, color: 'Red'}} />
+                }
 
             <label htmlFor="password">패스워드</label>
             <input id="password" name="password" type="password" value={ "" } />

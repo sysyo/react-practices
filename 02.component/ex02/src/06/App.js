@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
-// addtional .. 꼭 필요하지 않음
+// additional .. 꼭 필요하지 않음
 import {library} from '@fortawesome/fontawesome-svg-core'; // 이 작업을 해야만 solid 방법을 사용할 수 있음
 import {far} from '@fortawesome/free-regular-svg-icons';
 import {fab} from '@fortawesome/free-brands-svg-icons';
