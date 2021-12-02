@@ -10,14 +10,14 @@ export default function () {
     const [keyword, setKeyword] = useState('');
 
     const notifyKeywordChanged = (keyword) => {
-        console.log(keyword); // 자식이 부모 호출
-        setKeyword(keyword); // 다시 상태값 변화
+        // console.log(keyword); // 자식이 부모 호출
+        setKeyword(keyword); // 다시 상태값 변화 
     }
         return (
         <div className={'App'}>
             <RegisterForm />
-            <SearchBar callback = { notifyKeywordChanged } /> 
-            <Emaillist keyword={ keyword }  emails = { data } />
+            <SearchBar keyword = { keyword } callback={ notifyKeywordChanged } /> 
+            <Emaillist keyword = { keyword } emails = { data } />
         </div>
     )
 }

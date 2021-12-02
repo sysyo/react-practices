@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import styles from './assets/scss/SearchBar.scss';
 
-const SearchBar = ({callback}) => {
-    const [keyword, setKeyword] = useState('');
-    const onInputChanged = (e) => {
-        setKeyword(e.target.value); 
-        callback(e.target.value)
-    };
+const SearchBar = ({ keyword, callback }) => {
+    // const [keyword, setKeyword] = useState('');
+    // const onInputChanged = (e) => {
+    //     setKeyword(e.target.value);
+    //     callback(e.target.value);
+    // };
 
     return (
         <div>
-            <div className = {styles.Searchbar} >
-                찾기: <input type='text' placeholder='찾기' value={ keyword } onChange = { onInputChanged } />
+            <div className={styles.Searchbar} >
+                찾기: <input type='text' placeholder='찾기' value={keyword} onChange={(e) => callback(e.target.value)} />
             </div>
         </div>
     );
