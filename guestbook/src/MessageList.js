@@ -7,7 +7,7 @@ import modalStyles from "./assets/scss/modal.scss";
 
 Modal.setAppElement('body');
 
-export default function MessageList({messages}) {
+export default function MessageList({messages, notifyMessage}) {
     const refForm = useRef(null);
 
     // const [isOpen, setIsOpen] = useState(false);
@@ -39,15 +39,13 @@ export default function MessageList({messages}) {
             // const jsonResult = response.json;
 
             // 비밀번호가 틀린 경우
-            // jsonResult.data = null
-            // 틀린 경우 title 변경
-            setModalData({}, Object.assign(modalData), {title: '.....', password: ''});
+            // jsonResult.data가  null
+            // setModalData(Object.assign({}, modalData, {label:'비밀번호가 일치하지 않습니다.', password: ''}));
 
             // 잘 삭제가 된 경우
-            // jsonResult.data = 10
-
-            console.log("삭제!!!:", modalData);
-
+            // jsonResult.data가 10
+            setModalData({isOpen: false, password:''});
+            notifyMessage.delete(modalData.messageNo);
         } catch (err) {
             console.error(err);
         }
@@ -59,7 +57,7 @@ export default function MessageList({messages}) {
         // setIsOpen(true);
 
         setModalData({ // {isOpen: false} 되어있는 객체를 새로 교체
-            title: '작성 시 입력했던 비밀번호를 입력 하세요.', // 틀린 경우 title 변경
+            label: '작성 시 입력했던 비밀번호를 입력 하세요.', // 틀린 경우 label 변경
             isOpen: true,
             messageNo: no,
             password: ''
@@ -88,7 +86,7 @@ export default function MessageList({messages}) {
                         ref={refForm}
                         className={styles.DeleteForm}
                         onSubmit={handleSubmit}>
-                        <label>{modalData.title}</label>
+                        <label>{modalData.label || ''}</label>
                         <input
                             type={'password'}
                             autoComplete={'off'}
@@ -100,7 +98,6 @@ export default function MessageList({messages}) {
                 </div>
                 <div className={modalStyles['modal-dialog-buttons']}>
                     <button onClick={ () => {
-                        // console.log('삭제 : ', password);
                         refForm.current.dispatchEvent(new Event("submit", {cancelable: true, bubbles: true}));
                     } }>확인</button>
                     <button onClick={() => {setModalData(Object.assign({}, modalData, {isOpen: false})) } }>취소</button>
