@@ -9,16 +9,61 @@ Modal.setAppElement('body');
 
 export default function MessageList({messages}) {
     const refForm = useRef(null);
-    const [isOpen, setIsOpen] = useState(false);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();        
-        console.log("삭제!!!")
+    // const [isOpen, setIsOpen] = useState(false);
+    // const [password, setPassword] = useState('');
+    // const [messageNo, setmessageNo] = useState(0); => 하나로 모아서 modalData로 관리
+
+    const [modalData, setModalData] = useState({isOpen: false}); // 객체를 상태로 저장해야 하는 경우 // password, messageNo를 관리
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            if(e.target.password.value === '') {
+                return;
+            }
+            
+            // const response = await fetch(`/api/${modalData.messageNo}`, {
+            //     method: 'delete',
+            //     header: {
+            //         'Content-Type' : 'application/json',
+            //         'Accept': 'application/json'
+            //     },
+            //     body: JSON.stringify({password: modalData.password})
+            // });
+
+            // if(!response.ok) {
+            //      throw `${response.status} ${response.statusText}`
+            // }
+
+            // const jsonResult = response.json;
+
+            // 비밀번호가 틀린 경우
+            // jsonResult.data = null
+            // 틀린 경우 title 변경
+            setModalData({}, Object.assign(modalData), {title: '.....', password: ''});
+
+            // 잘 삭제가 된 경우
+            // jsonResult.data = 10
+
+            console.log("삭제!!!:", modalData);
+
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     const notifyDeleteMessage = (no) => {
-        console.log('delete!!!:' + no);
-        setIsOpen(true);
+        // setmessageNo(no);
+        // // setPassword('');
+        // setIsOpen(true);
+
+        setModalData({ // {isOpen: false} 되어있는 객체를 새로 교체
+            title: '작성 시 입력했던 비밀번호를 입력 하세요.', // 틀린 경우 title 변경
+            isOpen: true,
+            messageNo: no,
+            password: ''
+        })
     }
 
     return (
@@ -31,8 +76,8 @@ export default function MessageList({messages}) {
                                                   notifyDeleteMessage={notifyDeleteMessage} />)}
             </ul>
             <Modal
-                isOpen={isOpen}
-                onRequestClose={() => setIsOpen(false)}
+                isOpen={modalData.isOpen}
+                onRequestClose={ () => setModalData({isOpen: false}) }
                 shouldCloseOnOverlayClick={true}
                 className={modalStyles.Modal}
                 overlayClassName={modalStyles.Overlay}
@@ -43,19 +88,22 @@ export default function MessageList({messages}) {
                         ref={refForm}
                         className={styles.DeleteForm}
                         onSubmit={handleSubmit}>
-                        <label>작성시 입력했던 비밀번호를 입력 하세요.</label>
+                        <label>{modalData.title}</label>
                         <input
                             type={'password'}
                             autoComplete={'off'}
                             name={'password'}
-                            placeholder={'비밀번호'}/>
+                            value={modalData.password}
+                            placeholder={'비밀번호'}
+                            onChange={(e) => setModalData(Object.assign({}, modalData, {password: e.target.value}))}/>
                     </form>
                 </div>
                 <div className={modalStyles['modal-dialog-buttons']}>
                     <button onClick={ () => {
+                        // console.log('삭제 : ', password);
                         refForm.current.dispatchEvent(new Event("submit", {cancelable: true, bubbles: true}));
                     } }>확인</button>
-                    <button onClick={() => setIsOpen(false)}>취소</button>
+                    <button onClick={() => {setModalData(Object.assign({}, modalData, {isOpen: false})) } }>취소</button>
                 </div>
             </Modal>
         </Fragment>
@@ -65,3 +113,16 @@ export default function MessageList({messages}) {
 MessageList.propType = {
     message: PropTypes.arrayOf(PropTypes.shape(Message.propType))
 }
+
+
+// 객체를 복사해놓고 속성 하나만 변경하고 싶을 때
+// o = { a: 10, b: 20 }
+
+// 이 방법 말고
+// o1 = {};
+// o1.a = o.a
+// o1.b = 30;
+// -> o1 = {a:10, b:30}
+
+// => 이렇게 사용하기
+// Object.assign({}, o, {b: 30})
