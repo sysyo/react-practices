@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useRef} from 'react';
+import React, {Fragment, useState, useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import Message from './Message';
@@ -15,6 +15,11 @@ export default function MessageList({messages, notifyMessage}) {
     // const [messageNo, setmessageNo] = useState(0); => 하나로 모아서 modalData로 관리
 
     const [modalData, setModalData] = useState({isOpen: false}); // 객체를 상태로 저장해야 하는 경우 // password, messageNo를 관리
+    useEffect(() =>{
+        setTimeout(() => {
+            refForm.current && refForm.current.password.focus();
+        }, 200);
+    }, [modalData]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,7 +27,7 @@ export default function MessageList({messages, notifyMessage}) {
             if(e.target.password.value === '') {
                 return;
             }
-            
+
             // const response = await fetch(`/api/${modalData.messageNo}`, {
             //     method: 'delete',
             //     header: {
@@ -40,7 +45,7 @@ export default function MessageList({messages, notifyMessage}) {
 
             // 비밀번호가 틀린 경우
             // jsonResult.data가  null
-            // setModalData(Object.assign({}, modalData, {label:'비밀번호가 일치하지 않습니다.', password: ''}));
+            setModalData(Object.assign({}, modalData, {label:'비밀번호가 일치하지 않습니다.', password: ''}));
 
             // 잘 삭제가 된 경우
             // jsonResult.data가 10
