@@ -36,6 +36,8 @@ export default class Clock extends Component {
     }
 
     componentWillUnmount() {
-        console.log('Clock', 'componentWillUnmount');
+        this.interval = setInterval(function() {
+            this.setState(this.getCurrentClockTime());
+        }.bind(this), 1000);
     }
 }
