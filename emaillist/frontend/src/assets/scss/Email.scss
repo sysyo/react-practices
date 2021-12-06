@@ -1,7 +1,7 @@
 @charset "utf-8";
 
-:global(.App){
-    .Email { // li를 Email로 변경
+:global(.App) {
+    .Email {
         position: relative;
         background: #fff;
         width: 298px;
@@ -11,7 +11,6 @@
         border-radius: 3px;
         box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
     
-
         h4 {
             padding: 5px 0;
         }
@@ -39,13 +38,12 @@
                 content:'X'
             }
 
-            &:hover, &:visited, &:active {
+            &:hover,
+            &:visited, 
+            &:active {
                 text-decoration: none;
                 color: #fff;
             }
-
-
         }
-
     }
 }
