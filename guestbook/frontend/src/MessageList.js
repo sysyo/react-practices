@@ -9,12 +9,7 @@ Modal.setAppElement('body');
 
 export default function MessageList({messages, notifyMessage}) {
     const refForm = useRef(null);
-
-    // const [isOpen, setIsOpen] = useState(false);
-    // const [password, setPassword] = useState('');
-    // const [messageNo, setmessageNo] = useState(0); => 하나로 모아서 modalData로 관리
-
-    const [modalData, setModalData] = useState({isOpen: false}); // 객체를 상태로 저장해야 하는 경우 // password, messageNo를 관리
+    const [modalData, setModalData] = useState({isOpen: false});
     useEffect(() =>{
         setTimeout(() => {
             refForm.current && refForm.current.password.focus();
@@ -31,17 +26,18 @@ export default function MessageList({messages, notifyMessage}) {
             // const response = await fetch(`/api/${modalData.messageNo}`, {
             //     method: 'delete',
             //     header: {
-            //         'Content-Type' : 'application/json',
+            //         'Content-Type': 'application/json',
             //         'Accept': 'application/json'
             //     },
             //     body: JSON.stringify({password: modalData.password})
             // });
 
             // if(!response.ok) {
-            //      throw `${response.status} ${response.statusText}`
+            //     throw  `${response.status} ${response.statusText}`;
             // }
 
             // const jsonResult = response.json;
+
 
             // 비밀번호가 틀린 경우
             // jsonResult.data가  null
@@ -49,20 +45,16 @@ export default function MessageList({messages, notifyMessage}) {
 
             // 잘 삭제가 된 경우
             // jsonResult.data가 10
-            setModalData({isOpen: false, password:''});
-            notifyMessage.delete(modalData.messageNo);
+            // setModalData({isOpen: false, password:''});
+            // notifyMessage.delete(modalData.messageNo);
         } catch (err) {
             console.error(err);
         }
     }
 
     const notifyDeleteMessage = (no) => {
-        // setmessageNo(no);
-        // // setPassword('');
-        // setIsOpen(true);
-
-        setModalData({ // {isOpen: false} 되어있는 객체를 새로 교체
-            label: '작성 시 입력했던 비밀번호를 입력 하세요.', // 틀린 경우 label 변경
+        setModalData({
+            label: '작성시 입력했던 비밀번호를 입력 하세요.', 
             isOpen: true,
             messageNo: no,
             password: ''
@@ -115,16 +107,3 @@ export default function MessageList({messages, notifyMessage}) {
 MessageList.propType = {
     message: PropTypes.arrayOf(PropTypes.shape(Message.propType))
 }
-
-
-// 객체를 복사해놓고 속성 하나만 변경하고 싶을 때
-// o = { a: 10, b: 20 }
-
-// 이 방법 말고
-// o1 = {};
-// o1.a = o.a
-// o1.b = 30;
-// -> o1 = {a:10, b:30}
-
-// => 이렇게 사용하기
-// Object.assign({}, o, {b: 30})

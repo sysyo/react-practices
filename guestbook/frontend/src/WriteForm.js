@@ -15,9 +15,7 @@ export default function WriteForm({notifyMessage}) {
 
                 return {n: input.name, v: input.value};
             })
-            // .filter((o) => o.n !== '')
-            .filter(({n}) => n !== '') // 객체 분해
-            // .reduce(function(res, o) { res[o.n] = o.v }, {})
+            .filter(({n}) => n !== '')
             .reduce((res, {n, v}) => { 
                 res[n] = v;
                 return res;
