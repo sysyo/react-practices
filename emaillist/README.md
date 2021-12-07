@@ -56,8 +56,53 @@
 2. 같은 origin vs 다른 origin
 
 3. Same Origin Policy (SOP)
-   브라우저가 동일 출처 정색책(SOP)을 지켜서 다른 출처의 리소스 접근을 금지
+   브라우저가 동일 출처 정책(SOP)을 지켜서 다른 출처의 리소스 접근을 금지
    - 외부 리로스를 못 가져오는 단점
    - XSS 등과 같은 보안 취약점을 사전에 방지할 수 있다.
 
-4. 
+4. CORS(Cross Origin Resource Sharing)
+   ```
+   Access to fetch at 'http://localhost:8888/api' from origin 'http://localhost:9999' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+   ```
+
+   1. simple request
+   <pre>
+      JS             browser           server
+       --------------->   --------------->
+                              GET /api
+                          <--------------
+                           200 OK (Header)
+                            Access-Control-Allow-origin:*
+                            =============================
+                            "{...........}"
+                           
+     response <----------
+   </pre>
+
+      조건 :
+      1) GET, HEAD, POST 중의 하나의 method를 쓰는 경우
+      2) Accept, Accept-Language, Content-Type 등의 헤더만 사용하는 경우
+      3) Content-Type 헤더에 application/x-www-form-unlencoded, multipart/for-data, text/palin 인 경우
+
+   2. preflight request
+   <pre>
+      JS             browser           server
+       --------------->   --------------->
+           fetch()          OPTIONS /api/token
+                              (Header에 정보를 담아서 보냄
+                              ex) Access-Control-Request-Method : GET)
+
+                          <---------------
+                            200 OK (Header)
+                            Access-Control-Allow-Origin:*
+                            
+                           -------------->
+                               GET /api
+                           <--------------
+                            200 OK (Header)
+                            Access-Control-Allow-Origin:*
+                            cookies: ...
+                            =============================
+                            "{...........}"
+   response <----------
+   </pre>
