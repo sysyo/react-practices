@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment} from 'react';
 import Header from "../layout/Header";
 import Navigation from "../layout/Navigation";
 import Footer from "../layout/Footer";
@@ -9,7 +9,10 @@ export default function SiteLayout({children}) {
         <Fragment>
             <Header/>
             <div className={styles.Content}>
-                {children}
+                {/* <div className={styles.Main}>
+                    <h2>Main</h2>
+                </div> */}
+                {children} 
             </div>
             <Navigation/>
             <Footer/>
